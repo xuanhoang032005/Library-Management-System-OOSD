@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Xác nhận trả sách</title>
+</head>
+<body>
+<div th:replace="fragments/navbar :: body"></div>
+
+<div class="container">
+    <h2 class="page-title">↩️ Xác Nhận Trả Sách</h2>
+
+    <div th:if="${param.success}" style="background:#d5f5e3; color:#27ae60; padding:15px; border-radius:5px; margin-bottom:20px;">
+        ✅ Đã xác nhận trả sách thành công!
+    </div>
+
+    <div th:if="${#lists.isEmpty(returns)}" style="text-align:center; color:#7f8c8d; margin-top:30px;">
+        <p>Hiện không có yêu cầu trả sách nào cần xử lý.</p>
+    </div>
+
+    <table th:if="${!#lists.isEmpty(returns)}">
+        <thead>
+            <tr>
+                <th>Độc giả</th>
+                <th>Sách hoàn trả</th>
+                <th>Ngày mượn</th>
+                <th>Hạn trả</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="l : ${returns}">
+                <td th:text="${l.user.fullName}" style="font-weight:bold;"></td>
+                <td th:text="${l.book.title}" style="color:var(--primary);"></td>
+                <td th:text="${l.issueDate}"></td>
+                <td th:text="${l.dueDate}"></td>
+                <td>
+                    <form action="/admin/confirm-return" method="post">
+                        <input type="hidden" name="loanId" th:value="${l.id}">
+                        <button type="submit" class="btn" style="background:#8e44ad; color:white;">
+                            ✅ Xác nhận Đã nhận
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

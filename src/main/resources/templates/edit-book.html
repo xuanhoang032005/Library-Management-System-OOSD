@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Cập nhật sách</title>
+</head>
+<body>
+<div th:replace="fragments/navbar :: body"></div>
+
+<div class="container" style="max-width: 600px;">
+    <h2 class="page-title">✏️ Cập Nhật Thông Tin</h2>
+
+    <form action="/admin/update-book" method="post" style="background:white; padding:30px; border-radius:10px; box-shadow:0 0 15px rgba(0,0,0,0.05);">
+        
+        <label><b>ISBN (Không thể sửa):</b></label>
+        <input type="text" name="isbn" th:value="${book.isbn}" readonly style="background:#eee; cursor:not-allowed;">
+
+        <label><b>Tên sách:</b></label>
+        <input type="text" name="title" th:value="${book.title}" required>
+
+        <label><b>Tác giả:</b></label>
+        <input type="text" name="author" th:value="${book.author}" required>
+
+        <div style="display:flex; gap:10px;">
+            <div style="flex:1;">
+                <label><b>Năm XB:</b></label>
+                <input type="number" name="publishYear" th:value="${book.publishYear}">
+            </div>
+            <div style="flex:1;">
+                <label><b>Số lượng kho:</b></label>
+                <input type="number" name="quantity" th:value="${book.quantity}" required>
+            </div>
+        </div>
+
+        <label><b>Thể loại:</b></label>
+        <input type="text" name="category" th:value="${book.category}">
+
+        <div style="margin-top:20px; text-align:right;">
+            <a href="/library/books" class="btn btn-outline" style="margin-right:10px;">Hủy bỏ</a>
+            <button type="submit" class="btn btn-primary">Lưu Thay Đổi</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

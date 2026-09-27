@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Trang chủ</title>
+</head>
+<body>
+<div th:replace="fragments/navbar :: body"></div>
+
+<div class="container" style="text-align: center; margin-top: 50px;">
+    <h1 style="color: var(--primary); font-size: 2.5rem; margin-bottom: 10px;">📚 Hệ Thống Thư Viện</h1>
+    <p style="color: #666; font-size: 1.1rem;">Chào mừng quay trở lại, <b th:text="${session.currentUser.fullName}" style="color:var(--accent);">User</b>!</p>
+    
+    <div style="margin-top: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+        
+        <th:block th:if="${session.currentUser.role == 'READER'}">
+            <a href="/library/books" class="btn" style="background:var(--accent); color:white; padding:30px; border-radius:10px; font-size:1.2rem;">
+                📘<br>Xem & Mượn Sách
+            </a>
+            <a href="/reader/current-loans" class="btn" style="background:var(--success); color:white; padding:30px; border-radius:10px; font-size:1.2rem;">
+                📖<br>Sách Đang Mượn
+            </a>
+            <a href="/reader/history" class="btn" style="background:var(--warning); color:white; padding:30px; border-radius:10px; font-size:1.2rem;">
+                📜<br>Lịch Sử Của Tôi
+            </a>
+        </th:block>
+
+        <th:block th:if="${session.currentUser.role == 'ADMIN'}">
+            <a href="/admin/approve-requests" class="btn" style="background:var(--success); color:white; padding:30px; border-radius:10px; font-size:1.2rem;">
+                ✅<br>Duyệt Yêu Cầu
+            </a>
+            <a href="/admin/return-book" class="btn" style="background:#8e44ad; color:white; padding:30px; border-radius:10px; font-size:1.2rem;">
+                ↩️<br>Ghi Nhận Trả
+            </a>
+            <a href="/admin/add-book" class="btn" style="background:var(--warning); color:white; padding:30px; border-radius:10px; font-size:1.2rem;">
+                ➕<br>Nhập Sách Mới
+            </a>
+             <a href="/admin/users" class="btn" style="background:var(--secondary); color:white; padding:30px; border-radius:10px; font-size:1.2rem;">
+                👥<br>Quản Lý Độc Giả
+            </a>
+        </th:block>
+    </div>
+</div>
+
+</body>
+</html>

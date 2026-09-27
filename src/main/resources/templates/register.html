@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Đăng ký thành viên</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #2c3e50, #3498db); height: 100vh; display: flex; align-items: center; justify-content: center; margin: 0; }
+        .login-card { background: white; padding: 40px; border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); width: 400px; text-align: center; }
+        .form-control { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        .btn-register { width: 100%; padding: 12px; background: #27ae60; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top:10px;}
+        .btn-register:hover { background: #219150; }
+        a { color: #3498db; text-decoration: none; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <h2 style="color:#2c3e50;">📝 Đăng Ký Tài Khoản</h2>
+        
+        <form action="/auth/register" method="post">
+            <input type="text" name="username" class="form-control" placeholder="Tên đăng nhập" required>
+            <input type="password" name="password" class="form-control" placeholder="Mật khẩu" required>
+            <input type="text" name="fullName" class="form-control" placeholder="Họ và tên đầy đủ" required>
+            <input type="email" name="email" class="form-control" placeholder="Địa chỉ Email" required>
+            
+            <button type="submit" class="btn-register">TẠO TÀI KHOẢN</button>
+        </form>
+
+        <br>
+        <a href="/auth/login">⬅ Quay lại Đăng nhập</a>
+    </div>
+</body>
+</html>

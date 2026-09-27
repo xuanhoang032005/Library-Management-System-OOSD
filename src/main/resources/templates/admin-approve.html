@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Duyệt yêu cầu</title>
+</head>
+<body>
+<div th:replace="fragments/navbar :: body"></div>
+
+<div class="container">
+    <h2 class="page-title">✅ Duyệt Yêu Cầu Mượn Sách</h2>
+
+    <div th:if="${#lists.isEmpty(requests)}" style="text-align:center; color:#7f8c8d; margin-top:30px;">
+        <p>🎉 Hiện tại không có yêu cầu nào đang chờ duyệt.</p>
+        <a href="/" class="btn btn-outline">Quay về trang chủ</a>
+    </div>
+
+    <table th:if="${!#lists.isEmpty(requests)}">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Độc giả</th>
+                <th>Sách</th>
+                <th>Ngày yêu cầu</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="req : ${requests}">
+                <td><span class="badge" style="background:#95a5a6;" th:text="${req.id}"></span></td>
+                <td>
+                    <div th:text="${req.user.fullName}" style="font-weight:bold;"></div>
+                    <small style="color:#7f8c8d;" th:text="'ID: ' + ${req.user.id}"></small>
+                </td>
+                <td th:text="${req.book.title} + ' (' + ${req.book.isbn} + ')'"></td>
+                <td th:text="${req.requestDate}"></td>
+                <td>
+                    <form method="post" th:action="@{/admin/approve/{id}(id=${req.id})}">
+                        <button type="submit" class="btn btn-success">✅ Duyệt Ngay</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

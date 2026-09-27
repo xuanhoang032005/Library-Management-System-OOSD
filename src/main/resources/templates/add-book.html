@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Thêm sách mới</title>
+</head>
+<body>
+<div th:replace="fragments/navbar :: body"></div>
+
+<div class="container" style="max-width: 600px;">
+    <h2 class="page-title">➕ Thêm Sách Mới</h2>
+
+    <form action="/admin/add-book" method="post" style="background:white; padding:30px; border-radius:10px; box-shadow:0 0 15px rgba(0,0,0,0.05);">
+        
+        <label><b>Mã ISBN:</b></label>
+        <input type="text" name="isbn" placeholder="Ví dụ: 978-3-16-148410-0" required>
+
+        <label><b>Tên sách:</b></label>
+        <input type="text" name="title" placeholder="Nhập tên sách..." required>
+
+        <label><b>Tác giả:</b></label>
+        <input type="text" name="author" placeholder="Tên tác giả..." required>
+
+        <div style="display:flex; gap:10px;">
+            <div style="flex:1;">
+                <label><b>Năm XB:</b></label>
+                <input type="number" name="publishYear" required>
+            </div>
+            <div style="flex:1;">
+                <label><b>Số lượng:</b></label>
+                <input type="number" name="quantity" value="1" min="1" required>
+            </div>
+        </div>
+        
+        <label><b>Thể loại:</b></label>
+        <input type="text" name="category" placeholder="Ví dụ: Khoa học, Tiểu thuyết...">
+
+        <div style="margin-top:20px; text-align:right;">
+            <a href="/library/books" class="btn btn-outline" style="margin-right:10px;">Hủy bỏ</a>
+            <button type="submit" class="btn btn-success">Lưu Sách</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Quản lý độc giả</title>
+</head>
+<body>
+<div th:replace="fragments/navbar :: body"></div>
+
+<div class="container">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h2 class="page-title">👥 Danh Sách Độc Giả</h2>
+        </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tài khoản</th>
+                <th>Họ tên</th>
+                <th>Email</th>
+                <th>Trạng thái</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="u : ${users}">
+                <td th:text="${u.id}"></td>
+                <td th:text="${u.username}" style="font-weight:bold;"></td>
+                <td th:text="${u.fullName}"></td>
+                <td th:text="${u.email}"></td>
+                <td>
+                    <span th:if="${u.active}" class="badge badge-success">Hoạt động</span>
+                    <span th:if="${!u.active}" class="badge badge-danger">Đã khóa</span>
+                </td>
+                <td>
+                    <a th:href="@{/admin/user-history/{id}(id=${u.id})}" class="btn btn-primary" style="font-size:12px;">
+                        📜 Xem lịch sử
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <div style="margin-top:20px;">
+        <a href="/" class="btn btn-outline">⬅ Quay lại Dashboard</a>
+    </div>
+</div>
+</body>
+</html>

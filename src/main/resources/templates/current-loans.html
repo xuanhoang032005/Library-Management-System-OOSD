@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Sách đang mượn</title>
+</head>
+<body>
+<div th:replace="fragments/navbar :: body"></div>
+
+<div class="container">
+    <h2 class="page-title">📖 Sách Tôi Đang Giữ</h2>
+
+    <div th:if="${#lists.isEmpty(loans)}" style="text-align:center; margin-top:30px;">
+        <p>Bạn không mượn cuốn sách nào.</p>
+        <a href="/library/books" class="btn btn-primary">Đi mượn sách ngay</a>
+    </div>
+
+    <table th:if="${!#lists.isEmpty(loans)}">
+        <thead>
+            <tr>
+                <th>Sách</th>
+                <th>Ngày mượn</th>
+                <th>Hạn trả</th>
+                <th>Trạng thái</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="l : ${loans}">
+                <td th:text="${l.book.title}" style="font-weight:bold; color:var(--primary);"></td>
+                <td th:text="${l.issueDate}"></td>
+                <td th:text="${l.dueDate}" style="color:var(--danger); font-weight:bold;"></td>
+                <td>
+                    <span th:if="${l.status == 'OPEN'}" class="badge badge-success">Đang giữ</span>
+                    <span th:if="${l.status == 'RETURNING'}" class="badge badge-warning">Đang trả...</span>
+                </td>
+                <td>
+                    <form th:if="${l.status == 'OPEN'}" action="/reader/return-request" method="post">
+                        <input type="hidden" name="loanId" th:value="${l.id}">
+                        <button type="submit" class="btn btn-warning" onclick="return confirm('Xác nhận trả sách này?')">
+                            ↩️ Trả sách
+                        </button>
+                    </form>
+                    <span th:if="${l.status == 'RETURNING'}" style="color:#95a5a6; font-size:13px; font-style:italic;">
+                        Chờ thủ thư xác nhận
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

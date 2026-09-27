@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Danh sách sách</title>
+</head>
+<body>
+<div th:replace="fragments/navbar :: body"></div>
+
+<div class="container">
+    <h2 class="page-title">📖 Danh sách Sách</h2>
+
+    <div th:if="${param.success}" style="background:#d4edda; color:#155724; padding:15px; border-radius:5px; margin-bottom:20px;">
+        ✅ Thao tác thành công!
+    </div>
+    <div th:if="${param.error}" style="background:#f8d7da; color:#721c24; padding:15px; border-radius:5px; margin-bottom:20px;">
+        ❌ <span th:text="${param.error}">Lỗi</span>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+        <form action="/library/books" method="get" style="display: flex; gap: 10px; width: 60%;">
+            <input type="text" name="keyword" th:value="${keyword}" placeholder="Tìm tên sách, tác giả, ISBN..." style="margin-bottom: 0;">
+            <button type="submit" class="btn btn-primary">🔍 Tìm kiếm</button>
+            <a href="/library/books" class="btn btn-outline">Đặt lại</a>
+        </form>
+        
+        <div th:if="${session.currentUser.role == 'ADMIN'}">
+            <a href="/admin/add-book" class="btn btn-success">➕ Thêm sách mới</a>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th width="10%">ISBN</th>
+                <th width="30%">Tên sách</th>
+                <th width="20%">Tác giả</th>
+                <th width="10%">Kho</th>
+                <th width="15%">Trạng thái</th>
+                <th width="15%">Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="b : ${books}">
+                <td th:text="${b.isbn}" style="font-weight:bold; color:#555;"></td>
+                <td th:text="${b.title}" style="color:var(--primary); font-weight:600;"></td>
+                <td th:text="${b.author}"></td>
+                <td th:text="${b.quantity}" style="text-align: center;"></td>
+                <td>
+                    <span th:if="${b.quantity > 0}" class="badge badge-success">Còn hàng</span>
+                    <span th:if="${b.quantity <= 0}" class="badge badge-danger">Hết hàng</span>
+                </td>
+                
+                <td>
+                    <div th:if="${session.currentUser.role == 'ADMIN'}" style="display:flex; gap:5px;">
+                        <a th:href="@{/admin/edit-book/{isbn}(isbn=${b.isbn})}" class="btn btn-warning" style="font-size:12px;">Sửa</a>
+                        <a th:href="@{/admin/delete-book/{isbn}(isbn=${b.isbn})}" class="btn btn-danger" style="font-size:12px;" onclick="return confirm('Xóa sách này?');">Xóa</a>
+                    </div>
+
+                    <div th:if="${session.currentUser.role == 'READER'}">
+                        <span th:if="${b.borrowedByMe}" class="badge badge-warning">Đang giữ</span>
+                        <span th:if="${b.requestedByMe}" class="badge badge-primary">Chờ duyệt</span>
+
+                        <form th:if="${!b.borrowedByMe && !b.requestedByMe && b.quantity > 0}" action="/reader/request-borrow" method="post">
+                            <input type="hidden" name="userId" th:value="${session.currentUser.id}">
+                            <input type="hidden" name="isbn" th:value="${b.isbn}">
+                            <button type="submit" class="btn btn-success" style="font-size:12px;" 
+                                    onclick="return confirm('Gửi yêu cầu mượn cuốn này?');">📕 Mượn</button>
+                        </form>
+                        
+                        <span th:if="${b.quantity <= 0 && !b.borrowedByMe}" style="color:#aaa; font-size:12px;">Hết hàng</span>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
